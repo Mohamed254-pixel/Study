@@ -107,3 +107,20 @@ print(
     f"(1 = churn, 0 = no churn): "
     f"{churn_prediction}"
 )
+
+# Display model coefficients
+feature_names = (
+    ["tenure", "MonthlyCharges"] +
+    model.named_steps["preprocessor"]
+    .named_transformers_["cat"]
+    .get_feature_names_out(
+        ["Contract", "InternetService"]
+    ).tolist()
+)
+
+coefficients = model.named_steps["classifier"].coef_[0]
+
+print("\nModel Coefficients:")
+
+for feature, coef in zip(feature_names, coefficients):
+    print(f"{feature}: {coef:.2f}")
